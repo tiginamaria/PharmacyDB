@@ -12,7 +12,7 @@ data class MedicineEntity(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long,
 
-    @OneToOne(cascade = [(CascadeType.ALL)], fetch = FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(name = "medicine_description_id")
     @Column(nullable = false)
     val medicineDescription: MedicineDescriptionEntity,
@@ -20,12 +20,12 @@ data class MedicineEntity(
     @Column(name = "manufacturer", nullable = false)
     val manufacturer: String,
 
-    @OneToOne(cascade = [(CascadeType.ALL)], fetch = FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(name = "form_id")
     @Column(nullable = false)
     val form: FormEntity,
 
-    @OneToOne(cascade = [(CascadeType.ALL)], fetch = FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(name = "certificate_id")
     @Column(nullable = false)
     val certificate: CertificateEntity

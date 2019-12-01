@@ -13,7 +13,7 @@ data class CertificateEntity(
     @Column(name = "validity", nullable = false)
     val validity: LocalDate,
 
-    @ManyToOne(cascade = [(CascadeType.ALL)], fetch = FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(name = "laboratory_id")
     @Column(nullable = false)
     val laboratory: LaboratoryEntity

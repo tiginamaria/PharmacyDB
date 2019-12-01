@@ -9,7 +9,7 @@ data class IngredientEntity(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long,
 
-    @Column(name = "name", nullable = false)
+    @Column(name = "name", nullable = false, unique = true)
     val name: String,
 
     @Column(name = "formula", nullable = false)

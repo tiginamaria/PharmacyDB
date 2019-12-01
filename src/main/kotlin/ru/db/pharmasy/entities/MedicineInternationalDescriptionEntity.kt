@@ -9,10 +9,10 @@ data class MedicineInternationalDescriptionEntity(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long,
 
-    @Column(name = "international_name", nullable = false)
-    val validity: LocalDate,
+    @Column(name = "international_name", nullable = false, unique = true)
+    val international_name: LocalDate,
 
-    @ManyToOne(cascade = [(CascadeType.ALL)], fetch = FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(name = "active_ingredient_id")
     @Column(nullable = false)
     val activeIngredient: IngredientEntity

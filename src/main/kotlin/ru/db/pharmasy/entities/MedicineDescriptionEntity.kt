@@ -8,10 +8,10 @@ data class MedicineDescriptionEntity(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long,
 
-    @Column(name = "trade_name", nullable = false)
+    @Column(name = "trade_name", nullable = false, unique = true)
     val tradeName: String,
 
-    @OneToOne(cascade = [(CascadeType.ALL)], fetch = FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(name = "medicine_international_id")
     @Column(nullable = false)
     val medicineInternationalDescription: MedicineInternationalDescriptionEntity

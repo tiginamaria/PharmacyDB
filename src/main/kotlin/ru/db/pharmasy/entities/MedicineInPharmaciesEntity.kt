@@ -21,13 +21,13 @@ data class MedicineInPharmaciesEntity(
 
 @Embeddable
 class MedicineInPharmaciesId(
-    @OneToMany(cascade = [(CascadeType.ALL)], fetch = FetchType.EAGER)
+    @ManyToMany
     @JoinColumn(name = "pharmacy_id")
     @Column(nullable = false)
-    val pharmacy: PharmacyEntity,
+    val pharmacy: Set<PharmacyEntity>,
 
-    @OneToMany(cascade = [(CascadeType.ALL)])
+    @ManyToMany
     @JoinColumn(name = "medicine_id")
     @Column(nullable = false)
-    val medicine: MedicineEntity
+    val medicine: Set<MedicineEntity>
 ) : Serializable

@@ -6,7 +6,6 @@ import javax.persistence.*
 data class PharmacyEntity(
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long,
 
     @Column(name="address", nullable = false)
