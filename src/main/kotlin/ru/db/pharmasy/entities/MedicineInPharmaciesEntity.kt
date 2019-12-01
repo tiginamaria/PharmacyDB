@@ -2,8 +2,6 @@ package ru.db.pharmasy.entities
 
 import org.hibernate.annotations.Check
 import javax.persistence.*
-import java.io.Serializable
-import javax.persistence.Embeddable
 
 @Entity(name = "MedicineInPharmacies")
 data class MedicineInPharmaciesEntity(
@@ -12,6 +10,7 @@ data class MedicineInPharmaciesEntity(
     val id: MedicineInPharmaciesId,
 
     @Column(name = "price", nullable = false)
+    @Check(constraints = "price >= 0")
     val price: Double,
 
     @Column(name = "amount", nullable = false)
@@ -20,14 +19,14 @@ data class MedicineInPharmaciesEntity(
 )
 
 @Embeddable
-class MedicineInPharmaciesId(
-    @ManyToMany
+data class MedicineInPharmaciesId(
+    @ManyToOne
     @JoinColumn(name = "pharmacy_id")
     @Column(nullable = false)
-    val pharmacy: Set<PharmacyEntity>,
+    val pharmacy: PharmacyEntity,
 
-    @ManyToMany
+    @ManyToOne
     @JoinColumn(name = "medicine_id")
     @Column(nullable = false)
-    val medicine: Set<MedicineEntity>
-) : Serializable
+    val medicine: MedicineEntity
+)

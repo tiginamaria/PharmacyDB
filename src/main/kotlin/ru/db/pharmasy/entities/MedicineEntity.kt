@@ -3,9 +3,11 @@ package ru.db.pharmasy.entities
 import javax.persistence.*
 
 @Entity(name = "Medicine")
-@Table(uniqueConstraints = [
-    UniqueConstraint(columnNames = ["medicine_description_id", "manufacturer", "form_id"])
-])
+@Table(
+    uniqueConstraints = [
+        UniqueConstraint(columnNames = ["medicine_description_id", "manufacturer", "form_id"])
+    ]
+)
 data class MedicineEntity(
 
     @Id

@@ -1,9 +1,6 @@
 package ru.db.pharmasy
 
-import spark.Spark.exception
-import spark.Spark.get
-import spark.Spark.port
-import spark.Spark.staticFiles
+import spark.Spark.*
 
 object App {
     private val drugHandler = DrugHandler()

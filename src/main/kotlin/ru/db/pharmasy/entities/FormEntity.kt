@@ -2,6 +2,7 @@ package ru.db.pharmasy.entities
 
 import javax.persistence.*
 
+@Entity(name = "Form")
 data class FormEntity(
 
     @Id
