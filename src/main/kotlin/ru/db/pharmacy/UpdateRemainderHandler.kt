@@ -1,4 +1,4 @@
-package ru.db.pharmasy
+package ru.db.pharmacy
 
 class UpdateRemainderHandler {
     fun handle(drugId: Long, pharmacyId: Long, remainder: String) {

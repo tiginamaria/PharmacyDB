@@ -1,4 +1,4 @@
-package ru.db.pharmasy.entities
+package ru.db.pharmacy.entities
 
 import javax.persistence.*
 
@@ -16,7 +16,6 @@ data class MedicineEntity(
 
     @ManyToOne
     @JoinColumn(name = "medicine_description_id")
-    @Column(nullable = false)
     val medicineDescription: MedicineDescriptionEntity,
 
     @Column(name = "manufacturer", nullable = false)
@@ -24,11 +23,9 @@ data class MedicineEntity(
 
     @ManyToOne
     @JoinColumn(name = "form_id")
-    @Column(nullable = false)
     val form: FormEntity,
 
     @ManyToOne
     @JoinColumn(name = "certificate_id")
-    @Column(nullable = false)
     val certificate: CertificateEntity
 )

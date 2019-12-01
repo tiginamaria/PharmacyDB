@@ -1,4 +1,4 @@
-package ru.db.pharmasy
+package ru.db.pharmacy
 
 import spark.Spark.*
 

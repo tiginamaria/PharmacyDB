@@ -1,4 +1,4 @@
-package ru.db.pharmasy.entities
+package ru.db.pharmacy.entities
 
 import javax.persistence.*
 

@@ -1,6 +1,7 @@
-package ru.db.pharmasy.entities
+package ru.db.pharmacy.entities
 
 import org.hibernate.annotations.Check
+import java.io.Serializable
 import javax.persistence.*
 
 @Entity(name = "MedicineInPharmacies")
@@ -22,11 +23,9 @@ data class MedicineInPharmaciesEntity(
 data class MedicineInPharmaciesId(
     @ManyToOne
     @JoinColumn(name = "pharmacy_id")
-    @Column(nullable = false)
     val pharmacy: PharmacyEntity,
 
     @ManyToOne
     @JoinColumn(name = "medicine_id")
-    @Column(nullable = false)
     val medicine: MedicineEntity
-)
+) : Serializable

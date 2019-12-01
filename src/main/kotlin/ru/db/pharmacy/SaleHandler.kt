@@ -1,7 +1,7 @@
-package ru.db.pharmasy
+package ru.db.pharmacy
 
-class DrugHandler {
-    fun handle(drugId: Long?) {
+class SaleHandler {
+    fun handle(drugId: Long, discount: Double) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 

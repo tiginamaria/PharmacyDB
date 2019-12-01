@@ -1,4 +1,4 @@
-package ru.db.pharmasy.entities
+package ru.db.pharmacy.entities
 
 import java.time.LocalDate
 import javax.persistence.*
@@ -15,6 +15,5 @@ data class CertificateEntity(
 
     @ManyToOne
     @JoinColumn(name = "laboratory_id")
-    @Column(nullable = false)
     val laboratory: LaboratoryEntity
 )

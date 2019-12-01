@@ -1,4 +1,4 @@
-package ru.db.pharmasy.entities
+package ru.db.pharmacy.entities
 
 import javax.persistence.*
 
@@ -14,6 +14,5 @@ data class MedicineInternationalDescriptionEntity(
 
     @ManyToOne
     @JoinColumn(name = "active_ingredient_id")
-    @Column(nullable = false)
     val activeIngredient: IngredientEntity
 )
