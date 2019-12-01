@@ -5,8 +5,13 @@ import javax.persistence.EntityManagerFactory
 import javax.persistence.Persistence
 
 object Dao {
+    private lateinit var sessionFactory: EntityManagerFactory
 
-    private val sessionFactory: EntityManagerFactory = Persistence.createEntityManagerFactory("Postgres")
+    fun init() {
+        sessionFactory = Persistence.createEntityManagerFactory("Postgres")
+    }
+
+    fun stop() = sessionFactory.close()
 
     fun run(code: (EntityManager) -> Unit) {
         val entityManager = sessionFactory.createEntityManager()
@@ -21,7 +26,6 @@ object Dao {
         } finally {
             entityManager.close()
         }
-//        sessionFactory.close()
     }
 
 }
