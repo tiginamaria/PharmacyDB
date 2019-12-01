@@ -29,7 +29,7 @@ CREATE TABLE Certificate
 (
     id         INT PRIMARY KEY,
     validity   DATE                      NOT NULL,
-    laboratory INT REFERENCES Laboratory NOT NULL
+    laboratory_id INT REFERENCES Laboratory NOT NULL
 );
 
 -- Действующее вещество.
@@ -185,7 +185,7 @@ SELECT name, leader_name
 FROM Laboratories;
 
 INSERT
-INTO Certificate(id, validity, laboratory)
+INTO Certificate(id, validity, laboratory_id)
 SELECT n, CURRENT_DATE, (1 + random() * (SELECT COUNT(*) - 1 FROM Laboratory))::INT
 FROM generate_series(1, 10) AS n;
 
