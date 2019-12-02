@@ -1,7 +1,8 @@
 package ru.db.pharmacy.entities
 
-import java.time.LocalDate
+import java.io.Serializable
 import javax.persistence.*
+import java.sql.Date
 
 @Entity(name = "Certificate")
 data class CertificateEntity(
@@ -11,9 +12,9 @@ data class CertificateEntity(
     val id: Long,
 
     @Column(name = "validity", nullable = false)
-    val validity: LocalDate,
+    val validity: Date,
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
     @JoinColumn(name = "laboratory_id")
     val laboratory: LaboratoryEntity
-)
+):Serializable

@@ -1,5 +1,6 @@
 package ru.db.pharmacy.entities
 
+import org.hibernate.annotations.Cascade
 import org.hibernate.annotations.Check
 import java.io.Serializable
 import javax.persistence.*
@@ -16,16 +17,16 @@ data class MedicineInPharmaciesEntity(
 
     @Column(name = "amount", nullable = false)
     @Check(constraints = "amount >= 0")
-    val amount: Int
-)
+    val amount: Long
+):Serializable
 
 @Embeddable
 data class MedicineInPharmaciesId(
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
     @JoinColumn(name = "pharmacy_id")
     val pharmacy: PharmacyEntity,
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
     @JoinColumn(name = "medicine_id")
     val medicine: MedicineEntity
 ) : Serializable

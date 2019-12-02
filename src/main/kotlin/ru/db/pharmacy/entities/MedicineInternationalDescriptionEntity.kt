@@ -1,5 +1,6 @@
 package ru.db.pharmacy.entities
 
+import java.io.Serializable
 import javax.persistence.*
 
 @Entity(name = "MedicineInternationalDescription")
@@ -12,7 +13,7 @@ data class MedicineInternationalDescriptionEntity(
     @Column(name = "international_name", nullable = false, unique = true)
     val internationalName: String,
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
     @JoinColumn(name = "active_ingredient_id")
     val activeIngredient: IngredientEntity
-)
+): Serializable

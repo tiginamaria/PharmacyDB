@@ -1,5 +1,6 @@
 package ru.db.pharmacy.entities
 
+import java.io.Serializable
 import javax.persistence.*
 
 @Entity(name = "Ingredient")
@@ -14,4 +15,4 @@ data class IngredientEntity(
 
     @Column(name = "formula", nullable = false)
     val formula: String
-)
+): Serializable

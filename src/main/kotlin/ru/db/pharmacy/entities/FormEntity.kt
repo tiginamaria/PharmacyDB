@@ -1,5 +1,6 @@
 package ru.db.pharmacy.entities
 
+import java.io.Serializable
 import javax.persistence.*
 
 @Entity(name = "Form")
@@ -11,4 +12,4 @@ data class FormEntity(
 
     @Column(name = "name", nullable = false, unique = true)
     val name: String
-)
+): Serializable

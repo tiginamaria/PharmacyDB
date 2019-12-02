@@ -1,5 +1,6 @@
 package ru.db.pharmacy.entities
 
+import java.io.Serializable
 import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.Id
@@ -12,4 +13,4 @@ data class PharmacyEntity(
 
     @Column(name = "address", nullable = false)
     val address: String
-)
+): Serializable

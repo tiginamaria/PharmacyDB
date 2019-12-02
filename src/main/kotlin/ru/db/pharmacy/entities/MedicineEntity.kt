@@ -1,5 +1,6 @@
 package ru.db.pharmacy.entities
 
+import java.io.Serializable
 import javax.persistence.*
 
 @Entity(name = "Medicine")
@@ -14,18 +15,18 @@ data class MedicineEntity(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long,
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
     @JoinColumn(name = "medicine_description_id")
     val medicineDescription: MedicineDescriptionEntity,
 
     @Column(name = "manufacturer", nullable = false)
     val manufacturer: String,
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
     @JoinColumn(name = "form_id")
     val form: FormEntity,
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
     @JoinColumn(name = "certificate_id")
     val certificate: CertificateEntity
-)
+): Serializable
