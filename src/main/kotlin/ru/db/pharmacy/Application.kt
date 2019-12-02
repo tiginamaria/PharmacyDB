@@ -9,8 +9,8 @@ object App {
 
     @JvmStatic
     fun main(args: Array<String>) {
+        Dao.init()
         exception(Exception::class.java) { e, _, _ -> e.printStackTrace() }
-        staticFiles.location("/public")
         port(8080)
 
         get("/drugs") { req, _ ->
