@@ -1,33 +1,45 @@
 package ru.db.pharmacy
 
-import com.fasterxml.jackson.core.JsonProcessingException
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.databind.node.ArrayNode
 import ru.db.pharmacy.entities.MedicineInPharmaciesEntity
 
 class DrugHandler {
 
-    private val mapper = ObjectMapper()
+    private val builder = StringBuilder()
 
     fun handle(medicineId: Long?): String? {
-        //TODO: FIX ME(WRONG OUTPUT ORDER)
-        val result = mapper.createArrayNode()
-
-        val medicinesInfo = getMedicineInfo(medicineId)
-        for (medicineInfo in medicinesInfo) {
-            mapMedicineInfo(result, medicineInfo)
-        }
 
         val summariesInfo = getMedicineSummaryInfo(medicineId)
+        builder.append("<table border=1>\n")
+        builder.append("<tr>\n")
+        builder.append("<th>Medicine id</th>")
+        builder.append("<th>Total amount</th>")
+        builder.append("<th>Average price</th>")
+        builder.append("</tr>\n")
         for (summaryInfo in summariesInfo) {
-            mapSummaryMedicineInfo(result, summaryInfo)
+            builder.append("<tr>\n")
+            mapSummaryMedicineInfo(summaryInfo)
+            builder.append("</tr>\n")
         }
+        builder.append("</table>\n")
+        builder.append("<br>\n")
 
-        try {
-            return mapper.writeValueAsString(result)
-        } catch (e: JsonProcessingException) {
-            e.printStackTrace()
-            throw RuntimeException(e)
+        val medicinesInfo = getMedicineInfo(medicineId)
+        builder.append("<table border=1>\n")
+        builder.append("<tr>\n")
+        builder.append("<th>Name</th>")
+        builder.append("<th>Pharmacy id</th>")
+        builder.append("<th>Amount</th>")
+        builder.append("<th>Price</th>")
+        builder.append("</tr>\n")
+        for (medicineInfo in medicinesInfo) {
+            builder.append("<tr>\n")
+            mapMedicineInfo(medicineInfo)
+            builder.append("</tr>\n")
+        }
+        builder.append("</table>\n")
+
+        return builder.toString().also {
+            builder.clear()
         }
 
     }
@@ -95,22 +107,18 @@ class DrugHandler {
     }
 
 
-    private fun mapMedicineInfo(out: ArrayNode, medicine: MedicineInPharmaciesEntity) {
-        val medicineNode = mapper.createObjectNode()
-        medicineNode.put("medicine_name", medicine.id.medicine.medicineDescription.tradeName)
-        medicineNode.put("pharmacy_id", medicine.id.pharmacy.id.toString())
-        medicineNode.put("amount", medicine.amount.toString())
-        medicineNode.put("price", medicine.price.toString())
-        out.add(medicineNode)
+    private fun mapMedicineInfo(medicine: MedicineInPharmaciesEntity) {
+        builder.append("<th>${medicine.id.medicine.medicineDescription.tradeName}</th>")
+        builder.append("<th>${medicine.id.pharmacy.id}</th>")
+        builder.append("<th>${medicine.amount}</th>")
+        builder.append("<th>${medicine.price}</th>")
     }
 
 
-    private fun mapSummaryMedicineInfo(out: ArrayNode, summaryInfo: Any?) {
+    private fun mapSummaryMedicineInfo(summaryInfo: Any?) {
         val summary = summaryInfo as Array<*>
-        val summaryNode = mapper.createObjectNode()
-        summaryNode.put("medicine_id", summary[0].toString())
-        summaryNode.put("sum_amount", summary[1].toString())
-        summaryNode.put("avg_price", summary[2].toString())
-        out.add(summaryNode)
+        builder.append("<th>${summary[0].toString()}</th>")
+        builder.append("<th>${summary[1].toString()}</th>")
+        builder.append("<th>${summary[2].toString()}</th>")
     }
 }
