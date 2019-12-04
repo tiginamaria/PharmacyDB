@@ -11,7 +11,7 @@ class DrugHandler {
         val summariesInfo = getMedicineSummaryInfo(medicineId)
         builder.append("<table border=1>\n")
         builder.append("<tr>\n")
-        builder.append("<th>Medicine id</th>")
+        builder.append("<th>Name</th>")
         builder.append("<th>Total amount</th>")
         builder.append("<th>Average price</th>")
         builder.append("</tr>\n")
@@ -81,12 +81,13 @@ class DrugHandler {
                 summaryMedicineEntities = em
                     .createQuery("""
                             |SELECT 
-                            |m.id.medicine.id AS id, 
+                            |m.id.medicine.medicineDescription.tradeName AS name, 
                             |SUM(m.amount) AS sum_amount, 
                             |AVG(m.price) AS avg_price 
                             |FROM MedicineInPharmacies m 
                             |WHERE m.id.medicine.id=:medicineId 
-                            |GROUP BY medicine_id
+                            |GROUP BY m.id.medicine.medicineDescription.tradeName
+                            |ORDER BY name
                             |""".trimMargin())
                     .setParameter("medicineId", medicineId)
                     .resultList
@@ -94,11 +95,12 @@ class DrugHandler {
                 summaryMedicineEntities = em
                     .createQuery("""
                             |SELECT 
-                            |m.id.medicine.id AS id, 
+                            |m.id.medicine.medicineDescription.tradeName AS name, 
                             |SUM(m.amount) AS sum_amount, 
                             |AVG(m.price) AS avg_price 
                             |FROM MedicineInPharmacies m 
-                            |GROUP BY medicine_id
+                            |GROUP BY m.id.medicine.medicineDescription.tradeName
+                            |ORDER BY name
                             |""".trimMargin())
                     .resultList
             }
