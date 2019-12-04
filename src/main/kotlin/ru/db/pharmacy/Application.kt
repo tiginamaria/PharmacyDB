@@ -22,7 +22,13 @@ object App {
             val pharmacyId = req.queryParams("pharmacy_id")
             val remainder = req.queryParams("remainder")
             //TODO: check nullability
-            updateRemainderHandler.handle(drugId.toLong(), pharmacyId.toLong(), remainder)
+            val result = updateRemainderHandler.handle(drugId.toLong(), pharmacyId.toLong(), remainder)
+            when {
+                result < 0 -> halt(400, "Bad request!")
+                result > 0 -> "OK. $result updated."
+                else -> "No lines updated."
+            }
+
         }
 
         get("/sale") { req, _ ->

@@ -7,11 +7,11 @@ import ru.db.pharmacy.entities.MedicineInPharmaciesEntity
 
 class DrugHandler {
 
-    private val MAPPER = ObjectMapper()
+    private val mapper = ObjectMapper()
 
     fun handle(medicineId: Long?): String? {
         //TODO: FIX ME(WRONG OUTPUT ORDER)
-        val result = MAPPER.createArrayNode()
+        val result = mapper.createArrayNode()
 
         val medicinesInfo = getMedicineInfo(medicineId)
         for (medicineInfo in medicinesInfo) {
@@ -24,7 +24,7 @@ class DrugHandler {
         }
 
         try {
-            return MAPPER.writeValueAsString(result)
+            return mapper.writeValueAsString(result)
         } catch (e: JsonProcessingException) {
             e.printStackTrace()
             throw RuntimeException(e)
@@ -37,20 +37,24 @@ class DrugHandler {
         Dao.run { em ->
             if (medicineId != null) {
                 medicineEntities = em
-                    .createQuery("SELECT m FROM MedicineInPharmacies m " +
-                            "WHERE m.id.medicine.id=:medicineId " +
-                            "ORDER BY m.id.medicine.medicineDescription.tradeName ASC, " +
-                            "m.id.pharmacy.id ASC, " +
-                            "m.amount DESC",
+                    .createQuery("""
+                            |SELECT m FROM MedicineInPharmacies m 
+                            |WHERE m.id.medicine.id=:medicineId 
+                            |ORDER BY m.id.medicine.medicineDescription.tradeName ASC, 
+                            |m.id.pharmacy.id ASC, 
+                            |m.amount DESC
+                            |""".trimMargin(),
                         MedicineInPharmaciesEntity::class.java)
                     .setParameter("medicineId", medicineId)
                     .resultList
             } else {
                 medicineEntities = em
-                    .createQuery("SELECT m FROM MedicineInPharmacies m" +
-                            "ORDER BY m.id.medicine.medicineDescription.tradeName ASC, " +
-                            "m.id.pharmacy.id ASC, " +
-                            "m.amount DESC",
+                    .createQuery("""
+                            |FROM MedicineInPharmacies m 
+                            |ORDER BY m.id.medicine.medicineDescription.tradeName ASC, 
+                            |m.id.pharmacy.id ASC, 
+                            |m.amount DESC
+                            |""".trimMargin(),
                         MedicineInPharmaciesEntity::class.java)
                     .resultList
             }
@@ -63,22 +67,27 @@ class DrugHandler {
         Dao.run { em ->
             if (medicineId != null) {
                 summaryMedicineEntities = em
-                    .createQuery("SELECT m.id.medicine.id AS id, " +
-                            "SUM(m.amount) AS sum_amount, " +
-                            "AVG(m.price) AS avg_price " +
-                            "FROM MedicineInPharmacies m " +
-                            "WHERE m.id.medicine.id=:medicineId " +
-                            "GROUP BY medicine_id")
+                    .createQuery("""
+                            |SELECT 
+                            |m.id.medicine.id AS id, 
+                            |SUM(m.amount) AS sum_amount, 
+                            |AVG(m.price) AS avg_price 
+                            |FROM MedicineInPharmacies m 
+                            |WHERE m.id.medicine.id=:medicineId 
+                            |GROUP BY medicine_id
+                            |""".trimMargin())
                     .setParameter("medicineId", medicineId)
                     .resultList
             } else {
                 summaryMedicineEntities = em
-                    .createQuery("SELECT m.id.medicine.id AS id, " +
-                            "SUM(m.amount) AS sum_amount, " +
-                            "AVG(m.price) AS avg_price " +
-                            "FROM MedicineInPharmacies m " +
-                            "WHERE m.id.medicine.id=:medicineId " +
-                            "GROUP BY medicine_id")
+                    .createQuery("""
+                            |SELECT 
+                            |m.id.medicine.id AS id, 
+                            |SUM(m.amount) AS sum_amount, 
+                            |AVG(m.price) AS avg_price 
+                            |FROM MedicineInPharmacies m 
+                            |GROUP BY medicine_id
+                            |""".trimMargin())
                     .resultList
             }
         }
@@ -87,7 +96,7 @@ class DrugHandler {
 
 
     private fun mapMedicineInfo(out: ArrayNode, medicine: MedicineInPharmaciesEntity) {
-        val medicineNode = MAPPER.createObjectNode()
+        val medicineNode = mapper.createObjectNode()
         medicineNode.put("medicine_name", medicine.id.medicine.medicineDescription.tradeName)
         medicineNode.put("pharmacy_id", medicine.id.pharmacy.id.toString())
         medicineNode.put("amount", medicine.amount.toString())
@@ -97,9 +106,9 @@ class DrugHandler {
 
 
     private fun mapSummaryMedicineInfo(out: ArrayNode, summaryInfo: Any?) {
-        val summary = summaryInfo as Array<Any>
-        val summaryNode = MAPPER.createObjectNode()
-        summaryNode.put("medicine_name", summary[0].toString())
+        val summary = summaryInfo as Array<*>
+        val summaryNode = mapper.createObjectNode()
+        summaryNode.put("medicine_id", summary[0].toString())
         summaryNode.put("sum_amount", summary[1].toString())
         summaryNode.put("avg_price", summary[2].toString())
         out.add(summaryNode)
