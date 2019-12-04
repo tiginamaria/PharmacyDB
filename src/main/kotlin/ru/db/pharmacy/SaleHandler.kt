@@ -1,8 +1,18 @@
 package ru.db.pharmacy
 
 class SaleHandler {
-    fun handle(drugId: Long, discount: Double) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    fun handle(medicineId: Long, discount: Double): Int {
+        var result = 0
+        Dao.run { em ->
+            result = em.createQuery("""
+                |UPDATE MedicineInPharmacies m 
+                |SET m.price = m.price / 100 * :discount 
+                |WHERE m.id.medicine.id = :medicineId
+                |""".trimMargin())
+                .setParameter("discount", discount)
+                .setParameter("medicineId", medicineId)
+                .executeUpdate()
+        }
+        return result
     }
-
 }

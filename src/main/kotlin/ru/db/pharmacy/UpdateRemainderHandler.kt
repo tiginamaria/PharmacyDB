@@ -16,7 +16,7 @@ class UpdateRemainderHandler {
                         .setParameter("pharmacyId", pharmacyId)
                         .executeUpdate()
                 remainder.matches(Regex("[+|-][1-9][0-9]*")) ->
-                    result =  em.createQuery("""
+                    result = em.createQuery("""
                         |UPDATE MedicineInPharmacies m 
                         |SET m.amount = m.amount + :remainder 
                         |WHERE m.id.medicine.id = :medicineId AND m.id.pharmacy.id = :pharmacyId
