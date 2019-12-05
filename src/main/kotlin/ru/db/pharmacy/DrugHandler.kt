@@ -1,7 +1,5 @@
 package ru.db.pharmacy
 
-import ru.db.pharmacy.entities.MedicineInPharmaciesEntity
-
 class DrugHandler {
 
     private val builder = StringBuilder()
@@ -44,30 +42,38 @@ class DrugHandler {
 
     }
 
-    private fun getMedicineInfo(medicineId: Long?): List<MedicineInPharmaciesEntity> {
-        var medicineEntities: List<MedicineInPharmaciesEntity> = emptyList()
+    private fun getMedicineInfo(medicineId: Long?): List<Any?> {
+        var medicineEntities = emptyList<Any?>()
         Dao.run { em ->
             if (medicineId != null) {
                 medicineEntities = em
                     .createQuery("""
-                            |SELECT m FROM MedicineInPharmacies m 
+                            |SELECT
+                            |m.id.medicine.medicineDescription.tradeName, 
+                            |m.id.pharmacy.id,
+                            |m.amount,
+                            |m.price
+                            |FROM MedicineInPharmacies m 
                             |WHERE m.id.medicine.id=:medicineId 
                             |ORDER BY m.id.medicine.medicineDescription.tradeName ASC, 
                             |m.id.pharmacy.id ASC, 
                             |m.amount DESC
-                            |""".trimMargin(),
-                        MedicineInPharmaciesEntity::class.java)
+                            |""".trimMargin())
                     .setParameter("medicineId", medicineId)
                     .resultList
             } else {
                 medicineEntities = em
                     .createQuery("""
+                            |SELECT
+                            |m.id.medicine.medicineDescription.tradeName, 
+                            |m.id.pharmacy.id,
+                            |m.amount,
+                            |m.price
                             |FROM MedicineInPharmacies m 
                             |ORDER BY m.id.medicine.medicineDescription.tradeName ASC, 
                             |m.id.pharmacy.id ASC, 
                             |m.amount DESC
-                            |""".trimMargin(),
-                        MedicineInPharmaciesEntity::class.java)
+                            |""".trimMargin())
                     .resultList
             }
         }
@@ -108,19 +114,13 @@ class DrugHandler {
         return summaryMedicineEntities
     }
 
-
-    private fun mapMedicineInfo(medicine: MedicineInPharmaciesEntity) {
-        builder.append("<th>${medicine.id.medicine.medicineDescription.tradeName}</th>")
-        builder.append("<th>${medicine.id.pharmacy.id}</th>")
-        builder.append("<th>${medicine.amount}</th>")
-        builder.append("<th>${medicine.price}</th>")
+    private fun mapInfo(info: Any?, count: Int) {
+        val data = info as Array<*>
+        for (i in 0 until count) {
+            builder.append("<th>${data[i].toString()}</th>")
+        }
     }
 
-
-    private fun mapSummaryMedicineInfo(summaryInfo: Any?) {
-        val summary = summaryInfo as Array<*>
-        builder.append("<th>${summary[0].toString()}</th>")
-        builder.append("<th>${summary[1].toString()}</th>")
-        builder.append("<th>${summary[2].toString()}</th>")
-    }
+    private fun mapMedicineInfo(medicineInfo: Any?) = mapInfo(medicineInfo, 4)
+    private fun mapSummaryMedicineInfo(summaryInfo: Any?) = mapInfo(summaryInfo, 3)
 }
