@@ -160,7 +160,7 @@ CREATE TABLE DeliveryToPharmacyDescription
 );
 
 WITH Forms AS (
-    SELECT unnest(ARRAY ['порошок', 'мазь', 'сироп']) AS name)
+    SELECT unnest(ARRAY ['порошок', 'мазь', 'сироп', 'пилюля']) AS name)
 INSERT
 INTO Form(name)
 SELECT name
